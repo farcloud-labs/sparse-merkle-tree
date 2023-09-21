@@ -3,6 +3,7 @@
 Cargo.lock
 .vscode
 *.vi
+.idea
 
 c/rust-tests/target
 c/rust-tests/Cargo.lock
