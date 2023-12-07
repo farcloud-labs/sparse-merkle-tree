@@ -26,7 +26,6 @@ trie = []
 
 [dependencies]
 cfg-if = "1"
-blake2b-rs = "0.2"
 serde_with = { version = "3.3.0", features = ["hex"] }
 serde = "1.0.105"
 hex = "0.4.3"
