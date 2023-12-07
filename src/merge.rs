@@ -1,9 +1,9 @@
 use crate::h256::H256;
 use crate::traits::Hasher;
 // use ethers::abi::{encode, Token};
-use hex;
-use serde::{Deserialize, Serialize};
-use serde_with::serde_as;
+// use hex;
+// use serde::{Deserialize, Serialize};
+// use serde_with::serde_as;
 use tiny_keccak::{Hasher as OtherHasher, Keccak};
 
 const MERGE_NORMAL: u8 = 1;
@@ -31,7 +31,7 @@ const MERGE_ZEROS: u8 = 2;
 //     }
 // }
 
-#[derive(Debug, Eq, PartialEq, Clone, Deserialize, Serialize)]
+#[derive(Debug, Eq, PartialEq, Clone)]
 pub enum MergeValue {
     Value(H256),
     MergeWithZero {

@@ -19,9 +19,9 @@ include = [
 [features]
 default = ["std"]
 std = [
-  "serde/std",
-  "hex/std",
-  "serde_with/std",
+#  "serde/std",
+#  "hex/std",
+#  "serde_with/std",
 ]
 # SMT implemented in C
 smtc = []
@@ -30,10 +30,10 @@ trie = []
 
 [dependencies]
 cfg-if = "1"
-serde_with = { version = "3.3.0", features = ["hex"] }
-serde = { version = "1.0.105",  default-features = false}
-hex = "0.4.3"
-#ethers = "2.0.9"
+#serde_with = { version = "3.3.0", features = ["hex"] }
+#serde = { version = "1.0.105",  default-features = false}
+#hex = "0.4.3"
+##ethers = "2.0.9"
 tiny-keccak = { version = "2.0.2",  features = ["keccak"]}
 
 [dev-dependencies]
