@@ -9,27 +9,27 @@ use tiny_keccak::{Hasher as OtherHasher, Keccak};
 const MERGE_NORMAL: u8 = 1;
 const MERGE_ZEROS: u8 = 2;
 
-#[derive(Debug)]
-pub struct MV(MergeValue);
-use std::fmt::{Display, Formatter};
-impl Display for MV {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        match self.0 {
-            MergeValue::Value(v) => write!(f, "{}", hex::encode(v.as_slice())),
-            MergeValue::MergeWithZero {
-                base_node,
-                zero_bits,
-                zero_count,
-            } => write!(
-                f,
-                "base_node: {}, zero_bits: {}, zero_count: {}",
-                hex::encode(base_node.as_slice()),
-                hex::encode(zero_bits.as_slice()),
-                zero_count
-            ),
-        }
-    }
-}
+// #[derive(Debug)]
+// pub struct MV(MergeValue);
+// use std::fmt::{Display, Formatter};
+// impl Display for MV {
+//     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+//         match self.0 {
+//             MergeValue::Value(v) => write!(f, "{}", hex::encode(v.as_slice())),
+//             MergeValue::MergeWithZero {
+//                 base_node,
+//                 zero_bits,
+//                 zero_count,
+//             } => write!(
+//                 f,
+//                 "base_node: {}, zero_bits: {}, zero_count: {}",
+//                 hex::encode(base_node.as_slice()),
+//                 hex::encode(zero_bits.as_slice()),
+//                 zero_count
+//             ),
+//         }
+//     }
+// }
 
 #[derive(Debug, Eq, PartialEq, Clone, Deserialize, Serialize)]
 pub enum MergeValue {
