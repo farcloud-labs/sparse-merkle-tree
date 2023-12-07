@@ -1,6 +1,6 @@
 use crate::h256::H256;
 use crate::traits::Hasher;
-use ethers::abi::{encode, Token};
+// use ethers::abi::{encode, Token};
 use hex;
 use serde::{Deserialize, Serialize};
 use serde_with::serde_as;
@@ -91,16 +91,19 @@ impl MergeValue {
                 zero_bits,
                 zero_count,
             } => {
-                let mut tuple: Vec<Token> = Vec::new();
-                tuple.push(Token::Uint(MERGE_ZEROS.into()));
-                tuple.push(Token::FixedBytes(base_node.as_slice().to_vec()));
-                tuple.push(Token::FixedBytes(zero_bits.as_slice().to_vec()));
-                tuple.push(Token::Uint((*zero_count).into()));
-                let t = Token::Tuple(tuple);
-                let encoded = encode(&[t]);
+
+                // fixme
+                // let mut tuple: Vec<Token> = Vec::new();
+                // tuple.push(Token::Uint(MERGE_ZEROS.into()));
+                // tuple.push(Token::FixedBytes(base_node.as_slice().to_vec()));
+                // tuple.push(Token::FixedBytes(zero_bits.as_slice().to_vec()));
+                // tuple.push(Token::Uint((*zero_count).into()));
+                // let t = Token::Tuple(tuple);
+                // let encoded = encode(&[t]);
+
                 let mut output = [0u8; 32];
                 let mut hasher = Keccak::v256();
-                hasher.update(encoded.as_slice());
+                hasher.update(&[0u8; 32]);
                 hasher.finalize(&mut output);
                 let res = output.into();
                 res
@@ -166,15 +169,18 @@ pub fn hash_base_node<H: Hasher + Default>(
 ) -> H256 {
     let mut hasher = H::default();
     use tiny_keccak::Hasher;
-    let mut tuple: Vec<Token> = Vec::new();
-    tuple.push(Token::Uint(base_height.into()));
-    tuple.push(Token::FixedBytes(base_key.as_slice().to_vec()));
-    tuple.push(Token::FixedBytes(base_value.as_slice().to_vec()));
-    let t = Token::Tuple(tuple);
-    let encoded = encode(&[t]);
+
+    // fixme
+    // let mut tuple: Vec<Token> = Vec::new();
+    // tuple.push(Token::Uint(base_height.into()));
+    // tuple.push(Token::FixedBytes(base_key.as_slice().to_vec()));
+    // tuple.push(Token::FixedBytes(base_value.as_slice().to_vec()));
+    // let t = Token::Tuple(tuple);
+    // let encoded = encode(&[t]);
+
     let mut output = [0u8; 32];
     let mut hasher = Keccak::v256();
-    hasher.update(encoded.as_slice());
+    hasher.update(&[0u8; 32]);
     hasher.finalize(&mut output);
     output.into()
 }
@@ -205,21 +211,24 @@ pub fn merge<H: Hasher + Default>(
     }
     let mut hasher = H::default();
     use tiny_keccak::Hasher;
-    let mut tuple: Vec<Token> = Vec::new();
-    tuple.push(Token::Uint(MERGE_NORMAL.into()));
-    tuple.push(Token::Uint(height.into()));
-    tuple.push(Token::FixedBytes(node_key.as_slice().to_vec()));
-    tuple.push(Token::FixedBytes(
-        lhs.hash::<H>().clone().as_slice().to_vec(),
-    ));
-    tuple.push(Token::FixedBytes(
-        rhs.hash::<H>().clone().as_slice().to_vec(),
-    ));
-    let t = Token::Tuple(tuple);
-    let encoded = encode(&[t]);
+
+    // fixme
+    // let mut tuple: Vec<Token> = Vec::new();
+    // tuple.push(Token::Uint(MERGE_NORMAL.into()));
+    // tuple.push(Token::Uint(height.into()));
+    // tuple.push(Token::FixedBytes(node_key.as_slice().to_vec()));
+    // tuple.push(Token::FixedBytes(
+    //     lhs.hash::<H>().clone().as_slice().to_vec(),
+    // ));
+    // tuple.push(Token::FixedBytes(
+    //     rhs.hash::<H>().clone().as_slice().to_vec(),
+    // ));
+    // let t = Token::Tuple(tuple);
+    // let encoded = encode(&[t]);
+
     let mut output = [0u8; 32];
     let mut hasher = Keccak::v256();
-    hasher.update(encoded.as_slice());
+    hasher.update(&[0u8; 32]);
     hasher.finalize(&mut output);
     MergeValue::Value(output.into())
 }

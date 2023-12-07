@@ -30,8 +30,8 @@ blake2b-rs = "0.2"
 serde_with = { version = "3.3.0", features = ["hex"] }
 serde = "1.0.183"
 hex = "0.4.3"
-ethers = "2.0.9"
-tiny-keccak = "2.0.2"
+#ethers = "2.0.9"
+tiny-keccak = { version = "2.0.2",  features = ["keccak"]}
 
 [dev-dependencies]
 proptest = "0.9"
