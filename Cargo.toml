@@ -21,7 +21,7 @@ default = ["std"]
 std = [
 #  "serde/std",
 #  "hex/std",
-#  "serde_with/std",
+  "codec/std",
 ]
 # SMT implemented in C
 smtc = []
@@ -35,6 +35,7 @@ cfg-if = "1"
 #hex = "0.4.3"
 ##ethers = "2.0.9"
 tiny-keccak = { version = "2.0.2",  features = ["keccak"]}
+codec = { package = "parity-scale-codec", version = "3.6.1", features = ["derive"], default-features = false }
 
 [dev-dependencies]
 proptest = "0.9"
