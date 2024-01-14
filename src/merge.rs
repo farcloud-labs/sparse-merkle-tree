@@ -102,12 +102,12 @@ impl MergeValue {
                 // let t = Token::Tuple(tuple);
                 // let encoded = encode(&[t]);
 
-                let mut output = [0u8; 32];
-                let mut hasher = Keccak::v256();
-                hasher.update(&[0u8; 32]);
-                hasher.finalize(&mut output);
-                let res = output.into();
-                res
+                let mut hasher = H::default();
+                hasher.write_byte(MERGE_ZEROS);
+                hasher.write_h256(base_node);
+                hasher.write_h256(zero_bits);
+                hasher.write_byte(*zero_count);
+                hasher.finish()
             }
             #[cfg(feature = "trie")]
             MergeValue::ShortCut { key, value, height } => {
@@ -179,11 +179,10 @@ pub fn hash_base_node<H: Hasher + Default>(
     // let t = Token::Tuple(tuple);
     // let encoded = encode(&[t]);
 
-    let mut output = [0u8; 32];
-    let mut hasher = Keccak::v256();
-    hasher.update(&[0u8; 32]);
-    hasher.finalize(&mut output);
-    output.into()
+    hasher.write_byte(base_height);
+    hasher.write_h256(base_key);
+    hasher.write_h256(base_value);
+    hasher.finish()
 }
 
 /// Merge two hash with node information
@@ -227,11 +226,13 @@ pub fn merge<H: Hasher + Default>(
     // let t = Token::Tuple(tuple);
     // let encoded = encode(&[t]);
 
-    let mut output = [0u8; 32];
-    let mut hasher = Keccak::v256();
-    hasher.update(&[0u8; 32]);
-    hasher.finalize(&mut output);
-    MergeValue::Value(output.into())
+    let mut hasher = H::default();
+    hasher.write_byte(MERGE_NORMAL);
+    hasher.write_byte(height);
+    hasher.write_h256(node_key);
+    hasher.write_h256(&lhs.hash::<H>());
+    hasher.write_h256(&rhs.hash::<H>());
+    MergeValue::Value(hasher.finish())
 }
 
 pub fn merge_with_zero<H: Hasher + Default>(
