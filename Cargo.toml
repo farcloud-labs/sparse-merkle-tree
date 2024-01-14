@@ -31,8 +31,7 @@ trie = []
 [dependencies]
 cfg-if = "1"
 #serde_with = { version = "3.3.0", features = ["hex"] }
-#serde = { version = "1.0.105",  default-features = false}
-#hex = "0.4.3"
+#serde = { version = "1.0.105",  default-features = false#hex = "0.4.3"
 ##ethers = "2.0.9"
 tiny-keccak = { version = "2.0.2",  features = ["keccak"]}
 codec = { package = "parity-scale-codec", version = "3.6.1", features = ["derive"], default-features = false }
