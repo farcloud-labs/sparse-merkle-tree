@@ -2,37 +2,15 @@ use crate::h256::H256;
 use crate::traits::Hasher;
 // use ethers::abi::{encode, Token};
 // use hex;
-// use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize};
 // use serde_with::serde_as;
+use codec::{Decode, Encode};
 use tiny_keccak::{Hasher as OtherHasher, Keccak};
-use codec::{Encode, Decode};
 
 const MERGE_NORMAL: u8 = 1;
 const MERGE_ZEROS: u8 = 2;
 
-// #[derive(Debug)]
-// pub struct MV(MergeValue);
-// use std::fmt::{Display, Formatter};
-// impl Display for MV {
-//     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-//         match self.0 {
-//             MergeValue::Value(v) => write!(f, "{}", hex::encode(v.as_slice())),
-//             MergeValue::MergeWithZero {
-//                 base_node,
-//                 zero_bits,
-//                 zero_count,
-//             } => write!(
-//                 f,
-//                 "base_node: {}, zero_bits: {}, zero_count: {}",
-//                 hex::encode(base_node.as_slice()),
-//                 hex::encode(zero_bits.as_slice()),
-//                 zero_count
-//             ),
-//         }
-//     }
-// }
-
-#[derive(Debug, Eq, PartialEq, Clone, Decode, Encode)]
+#[derive(Debug, Eq, PartialEq, Clone, Decode, Encode, Deserialize, Serialize)]
 pub enum MergeValue {
     Value(H256),
     MergeWithZero {
@@ -92,16 +70,6 @@ impl MergeValue {
                 zero_bits,
                 zero_count,
             } => {
-
-                // fixme
-                // let mut tuple: Vec<Token> = Vec::new();
-                // tuple.push(Token::Uint(MERGE_ZEROS.into()));
-                // tuple.push(Token::FixedBytes(base_node.as_slice().to_vec()));
-                // tuple.push(Token::FixedBytes(zero_bits.as_slice().to_vec()));
-                // tuple.push(Token::Uint((*zero_count).into()));
-                // let t = Token::Tuple(tuple);
-                // let encoded = encode(&[t]);
-
                 let mut hasher = H::default();
                 hasher.write_byte(MERGE_ZEROS);
                 hasher.write_h256(base_node);
@@ -171,14 +139,6 @@ pub fn hash_base_node<H: Hasher + Default>(
     let mut hasher = H::default();
     use tiny_keccak::Hasher;
 
-    // fixme
-    // let mut tuple: Vec<Token> = Vec::new();
-    // tuple.push(Token::Uint(base_height.into()));
-    // tuple.push(Token::FixedBytes(base_key.as_slice().to_vec()));
-    // tuple.push(Token::FixedBytes(base_value.as_slice().to_vec()));
-    // let t = Token::Tuple(tuple);
-    // let encoded = encode(&[t]);
-
     hasher.write_byte(base_height);
     hasher.write_h256(base_key);
     hasher.write_h256(base_value);
@@ -199,32 +159,14 @@ pub fn merge<H: Hasher + Default>(
     }
     if lhs.is_zero() {
         let res = merge_with_zero::<H>(height, node_key, rhs, true);
-        // println!("res: {:}", MV(res.clone()));
-        // println!("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-        return res
+        return res;
     }
     if rhs.is_zero() {
         let res = merge_with_zero::<H>(height, node_key, lhs, false);
-        // println!("res: {:}", MV(res.clone()));
-        // println!("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-        return res
+        return res;
     }
     let mut hasher = H::default();
     use tiny_keccak::Hasher;
-
-    // fixme
-    // let mut tuple: Vec<Token> = Vec::new();
-    // tuple.push(Token::Uint(MERGE_NORMAL.into()));
-    // tuple.push(Token::Uint(height.into()));
-    // tuple.push(Token::FixedBytes(node_key.as_slice().to_vec()));
-    // tuple.push(Token::FixedBytes(
-    //     lhs.hash::<H>().clone().as_slice().to_vec(),
-    // ));
-    // tuple.push(Token::FixedBytes(
-    //     rhs.hash::<H>().clone().as_slice().to_vec(),
-    // ));
-    // let t = Token::Tuple(tuple);
-    // let encoded = encode(&[t]);
 
     let mut hasher = H::default();
     hasher.write_byte(MERGE_NORMAL);
