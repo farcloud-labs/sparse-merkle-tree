@@ -2,32 +2,52 @@
 use crate::h256::H256;
 use crate::traits::Hasher;
 use serde::{Deserialize, Serialize};
-// use serde_with::serde_as;
+#[cfg(features="std")]
+use serde_with::serde_as;
 use codec::{Decode, Encode};
-use tiny_keccak::{Hasher as OtherHasher, Keccak};
 use serde_with::hex::Hex;
-
+use tiny_keccak::{Hasher as OtherHasher, Keccak};
 
 const MERGE_NORMAL: u8 = 1;
 const MERGE_ZEROS: u8 = 2;
 
-// #[serde_as]
+#[cfg(features="std")]
+#[serde_as]
 #[derive(Debug, Eq, PartialEq, Clone, Decode, Encode, Deserialize, Serialize)]
 pub enum MergeValue {
-    // Value(#[serde_as(as = "Hex")] H256),
+    Value(#[serde_as(as = "Hex")] H256),
+    MergeWithZero {
+        #[serde_as(as = "Hex")]
+        base_node: H256,
+        #[serde_as(as = "Hex")]
+        zero_bits: H256,
+        #[serde_as(as = "DisplayFromStr")]
+        zero_count: u8,
+    },
+    #[cfg(feature = "trie")]
+    ShortCut {
+        #[serde_as(as = "Hex")]
+        key: H256,
+        #[serde_as(as = "Hex")]
+        value: H256,
+        #[serde_as(as = "DisplayFromStr")]
+        height: u8,
+    },
+}
+
+
+#[cfg(not(features="std"))]
+#[derive(Debug, Eq, PartialEq, Clone, Decode, Encode, Deserialize, Serialize)]
+pub enum MergeValue {
     Value(H256),
     MergeWithZero {
-        // #[serde_as(as = "Hex")]
         base_node: H256,
-        // #[serde_as(as = "Hex")]
         zero_bits: H256,
         zero_count: u8,
     },
     #[cfg(feature = "trie")]
     ShortCut {
-        // #[serde_as(as = "Hex")]
         key: H256,
-        // #[serde_as(as = "Hex")]
         value: H256,
         height: u8,
     },
@@ -168,7 +188,6 @@ pub fn merge<H: Hasher + Default>(
         let res = merge_with_zero::<H>(height, node_key, lhs, false);
         return res;
     }
-
 
     let mut hasher = H::default();
     hasher.write_byte(MERGE_NORMAL);

@@ -21,7 +21,7 @@ default = ["std"]
 std = [
   "serde/std",
   "codec/std",
-  # "serde_with/std",
+  "serde_with/std",
 ]
 # SMT implemented in C
 smtc = []
