@@ -5,21 +5,28 @@ use serde::{Deserialize, Serialize};
 use serde_with::serde_as;
 use codec::{Decode, Encode};
 use tiny_keccak::{Hasher as OtherHasher, Keccak};
+use serde_with::hex::Hex;
+
 
 const MERGE_NORMAL: u8 = 1;
 const MERGE_ZEROS: u8 = 2;
 
+#[serde_as]
 #[derive(Debug, Eq, PartialEq, Clone, Decode, Encode, Deserialize, Serialize)]
 pub enum MergeValue {
-    Value(H256),
+    Value(#[serde_as(as = "Hex")] H256),
     MergeWithZero {
+        #[serde_as(as = "Hex")]
         base_node: H256,
+        #[serde_as(as = "Hex")]
         zero_bits: H256,
         zero_count: u8,
     },
     #[cfg(feature = "trie")]
     ShortCut {
+        #[serde_as(as = "Hex")]
         key: H256,
+        #[serde_as(as = "Hex")]
         value: H256,
         height: u8,
     },

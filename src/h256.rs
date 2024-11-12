@@ -9,6 +9,21 @@ use serde_with::serde_as;
 )]
 pub struct H256(#[serde_as(as = "serde_with::hex::Hex")] [u8; 32]);
 
+impl From<Vec<u8>> for H256 {
+    fn from(value: Vec<u8>) -> Self {
+        let mut array = [0u8; 32];
+        let len = value.len().min(32);
+        array[..len].copy_from_slice(&value[..len]);
+        H256(array)
+    }
+}
+
+impl AsRef<[u8]> for H256 {
+    fn as_ref(&self) -> &[u8] {
+        &self.0
+    }
+}
+
 const ZERO: H256 = H256([0u8; 32]);
 const BYTE_SIZE: u8 = 8;
 
