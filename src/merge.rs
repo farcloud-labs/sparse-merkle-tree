@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 use crate::h256::H256;
 use crate::traits::Hasher;
 // use ethers::abi::{encode, Token};
@@ -165,8 +166,7 @@ pub fn merge<H: Hasher + Default>(
         let res = merge_with_zero::<H>(height, node_key, lhs, false);
         return res;
     }
-    let mut hasher = H::default();
-    use tiny_keccak::Hasher;
+    
 
     let mut hasher = H::default();
     hasher.write_byte(MERGE_NORMAL);
