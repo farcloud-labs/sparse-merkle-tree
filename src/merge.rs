@@ -2,17 +2,18 @@
 use crate::h256::H256;
 use crate::traits::Hasher;
 use serde::{Deserialize, Serialize};
-#[cfg(feature="std")]
+#[cfg(not(feature="std"))]
 use serde_with::serde_as;
+#[cfg(not(feature="std"))]
 use serde_with::DisplayFromStr;
 use codec::{Decode, Encode};
-use serde_with::hex::Hex;
+// use serde_with::hex::Hex;
 use tiny_keccak::{Hasher as OtherHasher, Keccak};
 
 const MERGE_NORMAL: u8 = 1;
 const MERGE_ZEROS: u8 = 2;
 
-#[cfg(feature="std")]
+#[cfg(not(feature="std"))]
 #[serde_as]
 #[derive(Debug, Eq, PartialEq, Clone, Decode, Encode, Deserialize, Serialize)]
 pub enum MergeValue {
@@ -35,10 +36,11 @@ pub enum MergeValue {
         height: u8,
     },
 }
+#[cfg(feature="std")]
+use utoipa::ToSchema;
 
-
-#[cfg(not(feature="std"))]
-#[derive(Debug, Eq, PartialEq, Clone, Decode, Encode, Deserialize, Serialize)]
+#[cfg(feature="std")]
+#[derive(Debug, Eq, PartialEq, Clone, Decode, Encode, Deserialize, Serialize, ToSchema)]
 pub enum MergeValue {
     Value(H256),
     MergeWithZero {
