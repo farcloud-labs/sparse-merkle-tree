@@ -1,20 +1,30 @@
 use crate::h256::H256;
 use crate::traits::Hasher;
+// use ethers::abi::{encode, Token};
+// use hex;
+use serde::{Deserialize, Serialize};
+// use serde_with::serde_as;
+use codec::{Decode, Encode};
+use tiny_keccak::{Hasher as OtherHasher, Keccak};
 
 const MERGE_NORMAL: u8 = 1;
 const MERGE_ZEROS: u8 = 2;
 
-#[derive(Debug, Eq, PartialEq, Clone)]
+#[derive(Debug, Eq, PartialEq, Clone, Decode, Encode, Deserialize, Serialize)]
 pub enum MergeValue {
     Value(H256),
     MergeWithZero {
+        // #[serde_as(as = "serde_with::hex::Hex")]
         base_node: H256,
+        // #[serde_as(as = "serde_with::hex::Hex")]
         zero_bits: H256,
         zero_count: u8,
     },
     #[cfg(feature = "trie")]
     ShortCut {
+        // #[serde_as(as = "serde_with::hex::Hex")]
         key: H256,
+        // #[serde_as(as = "serde_with::hex::Hex")]
         value: H256,
         height: u8,
     },
@@ -75,6 +85,27 @@ impl MergeValue {
     }
 }
 
+pub fn into_merge_value1<H: Hasher + Default>(key: H256, value: H256, height: u8) -> MergeValue {
+    // try keep hash same with MergeWithZero
+    if value.is_zero() || height == 0 {
+        MergeValue::from_h256(value)
+    } else {
+        let base_key = key.parent_path(0);
+        let base_node = hash_base_node::<H>(0, &base_key, &value);
+        let mut zero_bits = key;
+        for i in height..=core::u8::MAX {
+            if key.get_bit(i) {
+                zero_bits.clear_bit(i);
+            }
+        }
+        MergeValue::MergeWithZero {
+            base_node,
+            zero_bits,
+            zero_count: height,
+        }
+    }
+}
+
 /// Helper function for Shortcut node
 /// Transform it into a MergeValue or MergeWithZero node
 #[cfg(feature = "trie")]
@@ -106,6 +137,8 @@ pub fn hash_base_node<H: Hasher + Default>(
     base_value: &H256,
 ) -> H256 {
     let mut hasher = H::default();
+    use tiny_keccak::Hasher;
+
     hasher.write_byte(base_height);
     hasher.write_h256(base_key);
     hasher.write_h256(base_value);
@@ -125,11 +158,16 @@ pub fn merge<H: Hasher + Default>(
         return MergeValue::zero();
     }
     if lhs.is_zero() {
-        return merge_with_zero::<H>(height, node_key, rhs, true);
+        let res = merge_with_zero::<H>(height, node_key, rhs, true);
+        return res;
     }
     if rhs.is_zero() {
-        return merge_with_zero::<H>(height, node_key, lhs, false);
+        let res = merge_with_zero::<H>(height, node_key, lhs, false);
+        return res;
     }
+    let mut hasher = H::default();
+    use tiny_keccak::Hasher;
+
     let mut hasher = H::default();
     hasher.write_byte(MERGE_NORMAL);
     hasher.write_byte(height);

@@ -18,7 +18,11 @@ include = [
 
 [features]
 default = ["std"]
-std = []
+std = [
+#  "serde/std",
+#  "hex/std",
+  "codec/std",
+]
 # SMT implemented in C
 smtc = []
 # A storage optimized SMT implemented in trie (https://ouvrard-pierre-alain.medium.com/sparse-merkle-tree-86e6e2fc26da)
@@ -26,16 +30,20 @@ trie = []
 
 [dependencies]
 cfg-if = "1"
-blake2b-rs = "0.2"
+serde_with = { version = "3.3.0", features = ["hex"] }
+serde = { version = "1.0.105",  default-features = false }
+tiny-keccak = { version = "2.0.2",  features = ["keccak"]}
+codec = { package = "parity-scale-codec", version = "3.6.1", features = ["derive"], default-features = false }
 
 [dev-dependencies]
 proptest = "0.9"
 criterion = "0.2"
 rand = "0.8"
 hex = "0.4.3"
-serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 anyhow = "1.0.65"
+serde = { version = "1.0", features = ["derive"] }
+serde_with = { version = "3.3.0", features = ["hex"] }
 
 [[bench]]
 name = "smt_benchmark"

@@ -1,7 +1,14 @@
+use codec::{Decode, Encode};
 use core::cmp::Ordering;
-
+use serde::{Deserialize, Serialize};
+// use serde_with::serde_as;
 /// Represent 256 bits
-#[derive(Eq, PartialEq, Debug, Default, Hash, Clone, Copy)]
+// #[serde_as]
+// #[derive(Eq, PartialEq, Debug, Default, Hash, Clone, Copy, Deserialize, Serialize)]
+// pub struct H256(#[serde_as(as = "serde_with::hex::Hex")] [u8; 32]);
+#[derive(
+    Eq, PartialEq, Debug, Default, Hash, Clone, Copy, Decode, Encode, Deserialize, Serialize,
+)]
 pub struct H256([u8; 32]);
 
 const ZERO: H256 = H256([0u8; 32]);
@@ -20,7 +27,7 @@ impl H256 {
     pub fn get_bit(&self, i: u8) -> bool {
         let byte_pos = i / BYTE_SIZE;
         let bit_pos = i % BYTE_SIZE;
-        let bit = self.0[byte_pos as usize] >> bit_pos & 1;
+        let bit = self.0[byte_pos as usize] >> (7 - bit_pos) & 1;
         bit != 0
     }
 
@@ -28,14 +35,15 @@ impl H256 {
     pub fn set_bit(&mut self, i: u8) {
         let byte_pos = i / BYTE_SIZE;
         let bit_pos = i % BYTE_SIZE;
-        self.0[byte_pos as usize] |= 1 << bit_pos as u8;
+        self.0[byte_pos as usize] |= 1 << (7 - bit_pos) as u8;
     }
 
     #[inline]
+
     pub fn clear_bit(&mut self, i: u8) {
         let byte_pos = i / BYTE_SIZE;
         let bit_pos = i % BYTE_SIZE;
-        self.0[byte_pos as usize] &= !((1 << bit_pos) as u8);
+        self.0[byte_pos as usize] &= !((1 << (7 - bit_pos)) as u8);
     }
 
     #[inline]
@@ -79,7 +87,7 @@ impl H256 {
         // reset remain bytes
         let remain = start % BYTE_SIZE;
         if remain > 0 {
-            target.0[start_byte] &= 0b11111111 << remain
+            target.0[start_byte] &= 0b11111111 >> remain
         }
 
         target

@@ -7,10 +7,11 @@ use crate::{
     vec::Vec,
     H256, MAX_STACK_SIZE,
 };
+use codec::{Decode, Encode};
 use core::cmp::Ordering;
 use core::marker::PhantomData;
 /// The branch key
-#[derive(Debug, Clone, Eq, PartialEq, Hash)]
+#[derive(Debug, Clone, Eq, PartialEq, Hash, Decode, Encode)]
 pub struct BranchKey {
     pub height: u8,
     pub node_key: H256,
@@ -37,7 +38,7 @@ impl Ord for BranchKey {
 }
 
 /// A branch in the SMT
-#[derive(Debug, Eq, PartialEq, Clone)]
+#[derive(Debug, Eq, PartialEq, Clone, Decode, Encode)]
 pub struct BranchNode {
     pub left: MergeValue,
     pub right: MergeValue,
