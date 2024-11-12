@@ -1,11 +1,11 @@
 use codec::{Decode, Encode};
 use core::cmp::Ordering;
 use serde::{Deserialize, Serialize};
-#[cfg(features="std")]
+#[cfg(feature="std")]
 use serde_with::serde_as;
 use crate::vec::Vec;
 
-#[cfg(features="std")]
+#[cfg(feature="std")]
 #[serde_as]
 #[derive(
     Eq, PartialEq, Debug, Default, Hash, Clone, Copy, Decode, Encode, Deserialize, Serialize,
@@ -13,7 +13,7 @@ use crate::vec::Vec;
 pub struct H256(#[serde_as(as = "serde_with::hex::Hex")] [u8; 32]);
 
 
-#[cfg(not(features="std"))]
+#[cfg(not(feature="std"))]
 #[derive(
     Eq, PartialEq, Debug, Default, Hash, Clone, Copy, Decode, Encode, Deserialize, Serialize,
 )]
