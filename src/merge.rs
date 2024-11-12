@@ -1,10 +1,8 @@
 #![allow(unused_imports)]
 use crate::h256::H256;
 use crate::traits::Hasher;
-// use ethers::abi::{encode, Token};
-// use hex;
 use serde::{Deserialize, Serialize};
-// use serde_with::serde_as;
+use serde_with::serde_as;
 use codec::{Decode, Encode};
 use tiny_keccak::{Hasher as OtherHasher, Keccak};
 
@@ -15,17 +13,13 @@ const MERGE_ZEROS: u8 = 2;
 pub enum MergeValue {
     Value(H256),
     MergeWithZero {
-        // #[serde_as(as = "serde_with::hex::Hex")]
         base_node: H256,
-        // #[serde_as(as = "serde_with::hex::Hex")]
         zero_bits: H256,
         zero_count: u8,
     },
     #[cfg(feature = "trie")]
     ShortCut {
-        // #[serde_as(as = "serde_with::hex::Hex")]
         key: H256,
-        // #[serde_as(as = "serde_with::hex::Hex")]
         value: H256,
         height: u8,
     },
@@ -166,7 +160,7 @@ pub fn merge<H: Hasher + Default>(
         let res = merge_with_zero::<H>(height, node_key, lhs, false);
         return res;
     }
-    
+
 
     let mut hasher = H::default();
     hasher.write_byte(MERGE_NORMAL);

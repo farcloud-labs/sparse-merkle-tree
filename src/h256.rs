@@ -1,15 +1,13 @@
 use codec::{Decode, Encode};
 use core::cmp::Ordering;
 use serde::{Deserialize, Serialize};
-// use serde_with::serde_as;
-/// Represent 256 bits
-// #[serde_as]
-// #[derive(Eq, PartialEq, Debug, Default, Hash, Clone, Copy, Deserialize, Serialize)]
-// pub struct H256(#[serde_as(as = "serde_with::hex::Hex")] [u8; 32]);
+use serde_with::serde_as;
+
+#[serde_as]
 #[derive(
     Eq, PartialEq, Debug, Default, Hash, Clone, Copy, Decode, Encode, Deserialize, Serialize,
 )]
-pub struct H256([u8; 32]);
+pub struct H256(#[serde_as(as = "serde_with::hex::Hex")] [u8; 32]);
 
 const ZERO: H256 = H256([0u8; 32]);
 const BYTE_SIZE: u8 = 8;
