@@ -1,13 +1,13 @@
 use codec::{Decode, Encode};
 use core::cmp::Ordering;
 use serde::{Deserialize, Serialize};
-#[cfg(not(feature="std"))]
+// #[cfg(not(feature="std"))]
 use serde_with::serde_as;
 use crate::vec::Vec;
-#[cfg(feature="std")]
-use utoipa::{ToSchema};
+// #[cfg(feature="std")]
+// use utoipa::{ToSchema};
 
-#[cfg(not(feature="std"))]
+// #[cfg(not(feature="std"))]
 #[serde_as]
 #[derive(
     Eq, PartialEq, Debug, Default, Hash, Clone, Copy, Decode, Encode, Deserialize, Serialize,
@@ -15,12 +15,12 @@ use utoipa::{ToSchema};
 pub struct H256(#[serde_as(as = "serde_with::hex::Hex")] [u8; 32]);
 
 
-#[cfg(feature="std")]
-#[derive(
-    Eq, PartialEq, Debug, Default, Hash, Clone, Copy, Decode, Encode, Deserialize, Serialize,
-    ToSchema
-)]
-pub struct H256([u8; 32]);
+// // #[cfg(feature="std")]
+// #[derive(
+//     Eq, PartialEq, Debug, Default, Hash, Clone, Copy, Decode, Encode, Deserialize, Serialize,
+//     // ToSchema
+// )]
+// pub struct H256([u8; 32]);
 
 impl From<Vec<u8>> for H256 {
     fn from(value: Vec<u8>) -> Self {

@@ -1,19 +1,15 @@
 #![allow(unused_imports)]
 use crate::h256::H256;
 use crate::traits::Hasher;
-use serde::{Deserialize, Serialize};
-#[cfg(not(feature="std"))]
 use serde_with::serde_as;
-#[cfg(not(feature="std"))]
 use serde_with::DisplayFromStr;
 use codec::{Decode, Encode};
-// use serde_with::hex::Hex;
+use serde_with::hex::Hex;
 use tiny_keccak::{Hasher as OtherHasher, Keccak};
-
+use serde::{Deserialize, Serialize};
 const MERGE_NORMAL: u8 = 1;
 const MERGE_ZEROS: u8 = 2;
 
-#[cfg(not(feature="std"))]
 #[serde_as]
 #[derive(Debug, Eq, PartialEq, Clone, Decode, Encode, Deserialize, Serialize)]
 pub enum MergeValue {
@@ -33,25 +29,6 @@ pub enum MergeValue {
         #[serde_as(as = "Hex")]
         value: H256,
         #[serde_as(as = "DisplayFromStr")]
-        height: u8,
-    },
-}
-#[cfg(feature="std")]
-use utoipa::ToSchema;
-
-#[cfg(feature="std")]
-#[derive(Debug, Eq, PartialEq, Clone, Decode, Encode, Deserialize, Serialize, ToSchema)]
-pub enum MergeValue {
-    Value(H256),
-    MergeWithZero {
-        base_node: H256,
-        zero_bits: H256,
-        zero_count: u8,
-    },
-    #[cfg(feature = "trie")]
-    ShortCut {
-        key: H256,
-        value: H256,
         height: u8,
     },
 }
