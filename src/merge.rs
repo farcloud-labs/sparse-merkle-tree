@@ -1,3 +1,5 @@
+#![cfg_attr(not(feature = "std"), no_std)]
+
 #![allow(unused_imports)]
 use crate::h256::H256;
 use crate::traits::Hasher;
@@ -10,28 +12,59 @@ use serde::{Deserialize, Serialize};
 const MERGE_NORMAL: u8 = 1;
 const MERGE_ZEROS: u8 = 2;
 
-#[serde_as]
-#[derive(Debug, Eq, PartialEq, Clone, Decode, Encode, Deserialize, Serialize)]
-pub enum MergeValue {
-    Value(#[serde_as(as = "Hex")] H256),
-    MergeWithZero {
-        #[serde_as(as = "Hex")]
-        base_node: H256,
-        #[serde_as(as = "Hex")]
-        zero_bits: H256,
-        #[serde_as(as = "DisplayFromStr")]
-        zero_count: u8,
-    },
-    #[cfg(feature = "trie")]
-    ShortCut {
-        #[serde_as(as = "Hex")]
-        key: H256,
-        #[serde_as(as = "Hex")]
-        value: H256,
-        #[serde_as(as = "DisplayFromStr")]
-        height: u8,
+cfg_if::cfg_if! {
+    if #[cfg(feature="std")] {
+        use utoipa::{ToSchema};
+        #[serde_as]
+        #[derive(Debug, Eq, PartialEq, Clone, Decode, Encode, Deserialize, Serialize, ToSchema)]
+        pub enum MergeValue {
+            Value(#[serde_as(as = "Hex")] H256),
+            MergeWithZero {
+                #[serde_as(as = "Hex")]
+                base_node: H256,
+                #[serde_as(as = "Hex")]
+                zero_bits: H256,
+                #[serde_as(as = "DisplayFromStr")]
+                zero_count: u8,
+            },
+            #[cfg(feature = "trie")]
+            ShortCut {
+                #[serde_as(as = "Hex")]
+                key: H256,
+                #[serde_as(as = "Hex")]
+                value: H256,
+                #[serde_as(as = "DisplayFromStr")]
+                height: u8,
+            },
+}
+    }
+    else {
+        #[serde_as]
+        #[derive(Debug, Eq, PartialEq, Clone, Decode, Encode, Deserialize, Serialize)]
+        pub enum MergeValue {
+            Value(#[serde_as(as = "Hex")] H256),
+            MergeWithZero {
+                #[serde_as(as = "Hex")]
+                base_node: H256,
+                #[serde_as(as = "Hex")]
+                zero_bits: H256,
+                #[serde_as(as = "DisplayFromStr")]
+                zero_count: u8,
+            },
+            #[cfg(feature = "trie")]
+            ShortCut {
+                #[serde_as(as = "Hex")]
+                key: H256,
+                #[serde_as(as = "Hex")]
+                value: H256,
+                #[serde_as(as = "DisplayFromStr")]
+                height: u8,
     },
 }
+
+    }
+}
+
 
 impl MergeValue {
     pub fn from_h256(v: H256) -> Self {
