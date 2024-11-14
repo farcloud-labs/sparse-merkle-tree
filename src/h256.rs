@@ -10,7 +10,7 @@ cfg_if::cfg_if! {
         #[serde_as]
         #[derive(
             Eq, PartialEq, Debug, Default, Hash, Clone, Copy, Decode, Encode, Deserialize, Serialize,
-            ToSchema,
+            ToSchema
         )]
         pub struct H256(#[serde_as(as = "serde_with::hex::Hex")] [u8; 32]);
     }  else {
