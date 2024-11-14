@@ -24,7 +24,7 @@ cfg_if::cfg_if! {
                 base_node: H256,
                 #[serde_as(as = "Hex")]
                 zero_bits: H256,
-                #[serde_as(as = "DisplayFromStr")]
+                // #[serde_as(as = "DisplayFromStr")]
                 zero_count: u8,
             },
             #[cfg(feature = "trie")]
@@ -33,7 +33,7 @@ cfg_if::cfg_if! {
                 key: H256,
                 #[serde_as(as = "Hex")]
                 value: H256,
-                #[serde_as(as = "DisplayFromStr")]
+                // #[serde_as(as = "DisplayFromStr")]
                 height: u8,
             },
 }
@@ -48,7 +48,7 @@ cfg_if::cfg_if! {
                 base_node: H256,
                 #[serde_as(as = "Hex")]
                 zero_bits: H256,
-                #[serde_as(as = "DisplayFromStr")]
+                // #[serde_as(as = "DisplayFromStr")]
                 zero_count: u8,
             },
             #[cfg(feature = "trie")]
@@ -57,7 +57,7 @@ cfg_if::cfg_if! {
                 key: H256,
                 #[serde_as(as = "Hex")]
                 value: H256,
-                #[serde_as(as = "DisplayFromStr")]
+                // #[serde_as(as = "DisplayFromStr")]
                 height: u8,
     },
 }
