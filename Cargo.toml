@@ -23,6 +23,7 @@ std = [
   "codec/std",
   "serde_with/std",
   "scale-info/std",
+  "utoipa",
 ]
 # SMT implemented in C
 smtc = []
@@ -32,10 +33,8 @@ trie = []
 [dependencies]
 cfg-if = {version = "1"}
 serde = { version = "1.0.105",  features = ["derive"], default-features = false }
-# tiny-keccak = { version = "2.0.2",  features = ["keccak"], default-features = false}
 codec = { package = "parity-scale-codec", version = "3.6.1", features = ["derive"], default-features = false }
-# 条件编译
-utoipa = { version = "5.2.0", features = ["actix_extras"]}
+utoipa = { version = "5.2.0", features = ["actix_extras"], optional = true}
 serde_with = { version = "3.3.0", features = ["hex", "alloc", "macros"], default-features = false}
 
 scale-info = { version = "2.11.1", default-features = false, features = [
