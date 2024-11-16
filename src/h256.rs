@@ -3,6 +3,7 @@ use core::cmp::Ordering;
 use serde::{Deserialize, Serialize};
 use serde_with::serde_as;
 use crate::vec::Vec;
+use scale_info::TypeInfo;
 
 cfg_if::cfg_if! {
     if #[cfg(feature="std")] {
@@ -10,13 +11,13 @@ cfg_if::cfg_if! {
         #[serde_as]
         #[derive(
             Eq, PartialEq, Debug, Default, Hash, Clone, Copy, Decode, Encode, Deserialize, Serialize,
-            ToSchema
+            ToSchema, TypeInfo
         )]
         pub struct H256(#[serde_as(as = "serde_with::hex::Hex")] [u8; 32]);
     }  else {
         #[serde_as]
         #[derive(
-            Eq, PartialEq, Debug, Default, Hash, Clone, Copy, Decode, Encode, Deserialize, Serialize,
+            Eq, PartialEq, Debug, Default, Hash, Clone, Copy, Decode, Encode, Deserialize, Serialize, TypeInfo,
         )]
         pub struct H256(#[serde_as(as = "serde_with::hex::Hex")] [u8; 32]);
 
