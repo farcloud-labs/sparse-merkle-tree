@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 use serde_with::hex::Hex;
 use serde_with::serde_as;
 use serde_with::DisplayFromStr;
-use tiny_keccak::{Hasher as OtherHasher, Keccak};
+// use tiny_keccak::{Hasher as OtherHasher, Keccak};
 const MERGE_NORMAL: u8 = 1;
 const MERGE_ZEROS: u8 = 2;
 use scale_info::TypeInfo;
@@ -172,7 +172,7 @@ pub fn hash_base_node<H: Hasher + Default>(
     base_value: &H256,
 ) -> H256 {
     let mut hasher = H::default();
-    use tiny_keccak::Hasher;
+    // use tiny_keccak::Hasher;
 
     hasher.write_byte(base_height);
     hasher.write_h256(base_key);

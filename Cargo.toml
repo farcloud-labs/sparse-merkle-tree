@@ -32,7 +32,7 @@ trie = []
 [dependencies]
 cfg-if = {version = "1"}
 serde = { version = "1.0.105",  features = ["derive"], default-features = false }
-tiny-keccak = { version = "2.0.2",  features = ["keccak"], default-features = false}
+# tiny-keccak = { version = "2.0.2",  features = ["keccak"], default-features = false}
 codec = { package = "parity-scale-codec", version = "3.6.1", features = ["derive"], default-features = false }
 # 条件编译
 utoipa = { version = "5.2.0", features = ["actix_extras"]}
