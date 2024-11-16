@@ -34,14 +34,12 @@ trie = []
 cfg-if = {version = "1"}
 serde = { version = "1.0.105",  features = ["derive"], default-features = false }
 codec = { package = "parity-scale-codec", version = "3.6.1", features = ["derive"], default-features = false }
-utoipa = { version = "5.2.0", features = ["actix_extras"], optional = true}
 serde_with = { version = "3.3.0", features = ["hex", "alloc", "macros"], default-features = false}
-
 scale-info = { version = "2.11.1", default-features = false, features = [
 	"derive",
 ] }
 
-
+utoipa = { version = "5.2.0", features = ["actix_extras"], optional = true}
 [dev-dependencies]
 proptest = "0.9"
 criterion = "0.2"
