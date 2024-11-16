@@ -7,7 +7,7 @@ use crate::{
     vec::Vec,
     H256, MAX_STACK_SIZE,
 };
-use codec::{Encode, Decode};
+use codec::{Decode, Encode};
 use core::cmp::Ordering;
 use core::marker::PhantomData;
 /// The branch key

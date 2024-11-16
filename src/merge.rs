@@ -1,22 +1,22 @@
 #![cfg_attr(not(feature = "std"), no_std)]
-
 #![allow(unused_imports)]
 use crate::h256::H256;
 use crate::traits::Hasher;
+use codec::{Decode, Encode};
+use serde::{Deserialize, Serialize};
+use serde_with::hex::Hex;
 use serde_with::serde_as;
 use serde_with::DisplayFromStr;
-use codec::{Decode, Encode};
-use serde_with::hex::Hex;
 use tiny_keccak::{Hasher as OtherHasher, Keccak};
-use serde::{Deserialize, Serialize};
 const MERGE_NORMAL: u8 = 1;
 const MERGE_ZEROS: u8 = 2;
+use scale_info::TypeInfo;
 
 cfg_if::cfg_if! {
     if #[cfg(feature="std")] {
         use utoipa::{ToSchema};
         #[serde_as]
-        #[derive(Debug, Eq, PartialEq, Clone, Decode, Encode, Deserialize, Serialize, ToSchema)]
+        #[derive(Debug, Eq, PartialEq, Clone, Decode, Encode, Deserialize, Serialize, ToSchema, TypeInfo)]
         pub enum MergeValue {
             Value(#[serde_as(as = "Hex")] H256),
             MergeWithZero {
@@ -40,7 +40,7 @@ cfg_if::cfg_if! {
     }
     else {
         #[serde_as]
-        #[derive(Debug, Eq, PartialEq, Clone, Decode, Encode, Deserialize, Serialize)]
+        #[derive(Debug, Eq, PartialEq, Clone, Decode, Encode, Deserialize, Serialize, TypeInfo)]
         pub enum MergeValue {
             Value(#[serde_as(as = "Hex")] H256),
             MergeWithZero {
@@ -64,7 +64,6 @@ cfg_if::cfg_if! {
 
     }
 }
-
 
 impl MergeValue {
     pub fn from_h256(v: H256) -> Self {

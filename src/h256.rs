@@ -1,9 +1,9 @@
+use crate::vec::Vec;
 use codec::{Decode, Encode};
 use core::cmp::Ordering;
+use scale_info::TypeInfo;
 use serde::{Deserialize, Serialize};
 use serde_with::serde_as;
-use crate::vec::Vec;
-use scale_info::TypeInfo;
 
 cfg_if::cfg_if! {
     if #[cfg(feature="std")] {
@@ -23,7 +23,6 @@ cfg_if::cfg_if! {
 
     }
 }
-
 
 impl From<Vec<u8>> for H256 {
     fn from(value: Vec<u8>) -> Self {
