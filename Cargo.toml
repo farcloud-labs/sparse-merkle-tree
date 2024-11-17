@@ -2,7 +2,7 @@
 name = "sparse-merkle-tree"
 version = "0.6.1"
 authors = ["jjy <jjyruby@gmail.com>"]
-edition = "2018"
+edition = "2021"
 license = "MIT"
 repository = "https://github.com/nervosnetwork/sparse-merkle-tree"
 description = "Sparse merkle tree implement in rust"
@@ -33,7 +33,7 @@ trie = []
 [dependencies]
 cfg-if = {version = "1"}
 serde = { version = "1.0.105",  features = ["derive"], default-features = false }
-codec = { package = "parity-scale-codec", version = "=3.6.9", features = ["derive"], default-features = false }
+codec = { package = "parity-scale-codec", version = "3.6.9", features = ["derive"], default-features = false }
 serde_with = { version = "3.3.0", features = ["hex", "alloc", "macros"], default-features = false}
 scale-info = { version = "2.10.0", default-features = false, features = [
 	"derive",
