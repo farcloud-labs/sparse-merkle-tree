@@ -33,7 +33,7 @@ trie = []
 [dependencies]
 cfg-if = {version = "1"}
 serde = { version = "1.0.105",  features = ["derive"], default-features = false }
-codec = { package = "parity-scale-codec", version = "=3.6.9", features = ["derive"], default-features = false }
+codec = { package = "parity-scale-codec", version = "3.6.9", features = ["derive"], default-features = false }
 serde_with = { version = "3.3.0", features = ["hex", "alloc", "macros"], default-features = false}
 scale-info = { version = "2.10.0", default-features = false, features = [
 	"derive",
