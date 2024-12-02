@@ -8,8 +8,7 @@ use crate::{
     H256, MAX_STACK_SIZE,
 };
 use codec::{Decode, Encode};
-use core::cmp::Ordering;
-use core::marker::PhantomData;
+use core::{cmp::Ordering, marker::PhantomData};
 /// The branch key
 #[derive(Debug, Clone, Eq, PartialEq, Hash, Encode, Decode)]
 pub struct BranchKey {

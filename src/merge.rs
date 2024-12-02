@@ -1,12 +1,9 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 #![allow(unused_imports)]
-use crate::h256::H256;
-use crate::traits::Hasher;
+use crate::{h256::H256, traits::Hasher};
 use codec::{Decode, Encode};
 use serde::{Deserialize, Serialize};
-use serde_with::hex::Hex;
-use serde_with::serde_as;
-use serde_with::DisplayFromStr;
+use serde_with::{hex::Hex, serde_as, DisplayFromStr};
 // use tiny_keccak::{Hasher as OtherHasher, Keccak};
 const MERGE_NORMAL: u8 = 1;
 const MERGE_ZEROS: u8 = 2;
